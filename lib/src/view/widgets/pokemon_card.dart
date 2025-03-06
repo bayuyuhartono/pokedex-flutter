@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/src/View/pokemon_detail_screen.dart';
 import 'package:pokedex/src/model/pokemon_model.dart';
 import 'package:pokedex/src/utils/string_case_extension.dart';
+import 'package:pokedex/src/view/widgets/category_tab.dart';
 
 class PokemonCard extends StatelessWidget {
   final PokemonResults pokemon;
@@ -13,11 +14,6 @@ class PokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List<String> types = pokemon["type"].split(',');
-
-    const imageBaseUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
-    String pokemonId = pokemon.url != null  ? pokemon.url!.split("/")[6] : "";
-
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -37,7 +33,7 @@ class PokemonCard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Image.network(
-                  '$imageBaseUrl$pokemonId.png',
+                  pokemon.detail?.sprites.other?.officialArtwork.frontDefault ?? "",
                   width: 90,
                   height: 90,
                 ),
@@ -50,15 +46,20 @@ class PokemonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    pokemon.name != null ? pokemon.name!.toCapitalized : "",
+                    pokemon.name.toCapitalized,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   SizedBox(height: 4),
-                  // Column(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: types.map((type) => CategoryTab(text: type)).toList(),
-                  // ),
+                  pokemon.detail != null && pokemon.detail!.types.isNotEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: pokemon.detail!.types
+                        .map((type) => CategoryTab(text: type.type.name))
+                        .expand((widget) => [widget, SizedBox(height: 8)])
+                        .toList(),
+                  )
+                : SizedBox()
                 ],
               ),
             ),

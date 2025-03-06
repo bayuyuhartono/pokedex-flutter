@@ -21,9 +21,7 @@ class CategoryTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: ClipRRect(
+        ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
@@ -40,7 +38,6 @@ class CategoryTab extends StatelessWidget {
               ),
             ),
           ),
-        ),
       ],
     );
   }

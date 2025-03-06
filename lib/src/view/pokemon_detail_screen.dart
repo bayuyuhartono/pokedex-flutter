@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/src/model/pokemon_model.dart';
+import 'package:pokedex/src/view/widgets/category_tab.dart';
 
 class PokemonDetailScreen extends StatelessWidget {
   final PokemonResults pokemon;
@@ -10,23 +11,38 @@ class PokemonDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xff48d0b0),
-      appBar: AppBar(title: Text(pokemon.name ?? ""), backgroundColor: const Color(0xff48d0b0)),
+      appBar: AppBar(backgroundColor: const Color(0xff48d0b0)),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
             child: Text(
-              pokemon.name ?? "",
+              pokemon.name,
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
-          // Padding(
-          //   padding: EdgeInsets.all(16.0),
-          //   child: Text(
-          //     "Type: ${pokemon["type"]}",
-          //     style: TextStyle(fontSize: 18, color: Colors.white70),
-          //   ),
-          // ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: pokemon.detail!.types
+                  .map((type) => CategoryTab(text: type.type.name))
+                  .expand((widget) => [widget, SizedBox(width: 8)])
+                  .toList(),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Image.network(
+                pokemon.detail?.sprites.other?.officialArtwork.frontDefault ?? "",
+                width: 300,
+                height: 300,
+              ),
+            ),
+          ),
           Expanded(
             child: Container(
               padding: EdgeInsets.all(16),

@@ -43,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisSpacing: 10,
                   childAspectRatio: 1.2,
                 ),
-                itemCount: viewModel.pokemonModel.data?.results?.length ?? 0,
+                itemCount: viewModel.pokemonModel.data?.results.length ?? 0,
                 itemBuilder: (context, index) {
-                  final pokemon = viewModel.pokemonModel.data!.results![index];
+                  final pokemon = viewModel.pokemonModel.data!.results[index];
                   return PokemonCard(pokemon: pokemon);
                 },
               );
