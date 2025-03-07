@@ -16,18 +16,17 @@ class PokemonRepo {
       final jsonData = PokemonModel.fromJson(response);
       return jsonData;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
   Future<PokemonDetailModel?> getPokemonDetailData(String uri) async {
     try {
       dynamic response = await _apiService.getResponse(uri);
-      print("Log detaildata: $response");
       final jsonData = PokemonDetailModel.fromJson(response);
       return jsonData;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/src/model/pokemon_model.dart';
+import 'package:pokedex/src/utils/color_utils.dart';
 import 'package:pokedex/src/view/widgets/category_tab.dart';
+import 'package:pokedex/src/view/widgets/tabcontent_about.dart';
+import 'package:pokedex/src/view/widgets/tabcontent_stats.dart';
 
 class PokemonDetailScreen extends StatelessWidget {
   final PokemonResults pokemon;
 
-  PokemonDetailScreen({required this.pokemon});
+  const PokemonDetailScreen({super.key, required this.pokemon});
 
   @override
   Widget build(BuildContext context) {
+    Color baseColor = ColorUtils.getColorForType(pokemon.detail?.types.first.type.name);
+
     return Scaffold(
-      backgroundColor: const Color(0xff48d0b0),
-      appBar: AppBar(backgroundColor: const Color(0xff48d0b0)),
+      backgroundColor: baseColor,
+      appBar: AppBar(backgroundColor: baseColor),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -50,17 +55,7 @@ class PokemonDetailScreen extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Base Stats", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  StatRow("HP", 45),
-                  StatRow("Attack", 60),
-                  StatRow("Defense", 50),
-                  StatRow("Speed", 65),
-                ],
-              ),
+              child: _tabSection(context, pokemon),
             ),
           ),
         ],
@@ -69,26 +64,23 @@ class PokemonDetailScreen extends StatelessWidget {
   }
 }
 
-class StatRow extends StatelessWidget {
-  final String label;
-  final int value;
-
-  StatRow(this.label, this.value);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(label, style: TextStyle(fontSize: 18)),
-        SizedBox(width: 10),
+Widget _tabSection(BuildContext context, PokemonResults pokemon) {
+  return DefaultTabController(
+    length: 2,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        TabBar(tabs: [
+          Tab(text: "About"),
+          Tab(text: "Stats"),
+        ]),
         Expanded(
-          child: LinearProgressIndicator(
-            value: value / 100,
-            color: Colors.blue,
-            backgroundColor: Colors.grey.shade300,
-          ),
+          child: TabBarView(children: [
+            TabContentAbout(pokemon: pokemon),
+            TabContentStats(stats: pokemon.detail!.stats),
+          ]),
         ),
       ],
-    );
-  }
+    ),
+  );
 }

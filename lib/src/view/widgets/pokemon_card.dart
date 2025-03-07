@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/src/View/pokemon_detail_screen.dart';
 import 'package:pokedex/src/model/pokemon_model.dart';
+import 'package:pokedex/src/utils/color_utils.dart';
 import 'package:pokedex/src/utils/string_case_extension.dart';
 import 'package:pokedex/src/view/widgets/category_tab.dart';
 
@@ -23,7 +24,7 @@ class PokemonCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xff48d0b0),
+          color: ColorUtils.getColorForType(pokemon.detail?.types.first.type.name),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Stack(
@@ -32,11 +33,13 @@ class PokemonCard extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: Image.network(
-                  pokemon.detail?.sprites.other?.officialArtwork.frontDefault ?? "",
+                child: pokemon.detail?.sprites.other?.officialArtwork.frontDefault != null 
+                ? Image.network(
+                  pokemon.detail!.sprites.other!.officialArtwork.frontDefault,
                   width: 90,
                   height: 90,
-                ),
+                )
+                : SizedBox(),
               ),
             ),
             Padding(

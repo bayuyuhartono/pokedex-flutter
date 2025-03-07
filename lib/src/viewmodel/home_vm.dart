@@ -11,7 +11,6 @@ class HomeVM extends ChangeNotifier {
   ApiResponse<PokemonModel> pokemonModel = ApiResponse.loading();
 
   void _setPokemonMain(ApiResponse<PokemonModel> response) {
-    print("Response: $response");
     pokemonModel = response;
     if (pokemonModel.data?.results != null) {
       for (var element in pokemonModel.data!.results) {
