@@ -12,14 +12,7 @@ class HomeVM extends ChangeNotifier {
 
   void _setPokemonMain(ApiResponse<PokemonModel> response) {
     pokemonModel = response;
-    if (pokemonModel.data?.results != null) {
-      for (var element in pokemonModel.data!.results) {
-        _myRepo.getPokemonDetailData("pokemon/${element.url.split("/")[6]}").then((value) {
-          element.detail = value;
-          notifyListeners();
-        });
-      }
-    }
+    notifyListeners();
   }
 
   Future<void> fetchPokemonData() async {
